@@ -48,10 +48,21 @@ export const markFeedbackReviewed = async (
   next
 ) => {
   try {
+
+    console.log(
+      'Feedback ID:',
+      req.params.id
+    );
+
     const feedback =
       await Feedback.findById(
         req.params.id
       );
+
+    console.log(
+      'Feedback Found:',
+      feedback
+    );
 
     if (!feedback) {
       res.status(404);
@@ -60,8 +71,7 @@ export const markFeedbackReviewed = async (
       );
     }
 
-    feedback.status =
-      'reviewed';
+    feedback.status = 'Reviewed';
 
     feedback.reviewedAt =
       new Date();
@@ -74,7 +84,9 @@ export const markFeedbackReviewed = async (
     await feedback.save();
 
     res.json(feedback);
+
   } catch (error) {
+    console.log(error); // add this too
     next(error);
   }
 };

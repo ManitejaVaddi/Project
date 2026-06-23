@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getProfile, updateProfile } from '../api/userApi';
-
+import { changePassword } from '../api/accountApi';
 const calculateBMI = (height, weight) => {
   if (!height || !weight) return 0;
 
@@ -39,6 +39,7 @@ const calculateBMR = (
   );
 };
 
+
 const calculateWaterGoal = (weight) => {
   if (!weight) return 0;
   return Math.round(weight * 35);
@@ -57,6 +58,12 @@ const ProfilePage = () => {
   });
   const [form, setForm] = useState({});
 
+const [passwords, setPasswords] = useState({
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+});
+
   useEffect(() => {
     if (data) {
       setForm(data);
@@ -69,6 +76,9 @@ const ProfilePage = () => {
       setForm(updated);
     },
   });
+  const passwordMutation = useMutation({
+  mutationFn: changePassword,
+});
 
   if (isLoading) {
     return <div className="p-8">Loading profile...</div>;
@@ -108,10 +118,24 @@ const waterGoal =
 
   return (
     <div className="mx-auto max-w-3xl rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
+      <div className="mb-6 flex justify-center">
+
+  <img
+    src={
+      form.avatar ||
+      'https://via.placeholder.com/120'
+    }
+    alt="profile"
+    className="h-32 w-32 rounded-full border-4 border-brand-500 object-cover"
+  />
+
+</div>
       <h1 className="text-3xl font-semibold text-slate-900">Your profile</h1>
       <p className="mt-2 text-slate-500">Keep your personal goals and metrics up to date.</p>
+      
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
+        
 
   <div className="rounded-2xl bg-slate-50 p-4">
     <p className="text-sm text-slate-500">
@@ -152,48 +176,121 @@ const waterGoal =
 </div>
 
       <div className="mb-6 rounded-xl bg-orange-50 p-5">
-        <p className="text-sm text-orange-700">
-          Current Streak
-        </p>
-        <p className="mt-2 text-4xl font-bold text-orange-600">
-          🔥 {form.streak || 0} Days
-        </p>
-      </div>
+  <p className="text-sm text-orange-700">
+    Current Streak
+  </p>
 
-      <form
-        className="mt-8 grid gap-4 md:grid-cols-2"
-        onSubmit={handleSubmit}
-      >
-        {[
-          [
+  <p className="mt-2 text-4xl font-bold text-orange-600">
+    🔥 {form.streak || 0} Days
+  </p>
+</div>
+
+{/* Personal Information */}
+
+<div className="mb-6 rounded-2xl border border-slate-200 p-6">
+
+  <h2 className="mb-4 text-xl font-bold">
+    Personal Information
+  </h2>
+
+  <div className="grid gap-4 md:grid-cols-2">
+
+    <div>
+      <p className="text-sm text-slate-500">
+        Name
+      </p>
+
+      <p className="font-semibold">
+        {form.name}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-slate-500">
+        Email
+      </p>
+
+      <p className="font-semibold">
+        {form.email}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-slate-500">
+        Age
+      </p>
+
+      <p className="font-semibold">
+        {form.age}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-slate-500">
+        Gender
+      </p>
+
+      <p className="font-semibold">
+        {form.gender}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-slate-500">
+        Height
+      </p>
+
+      <p className="font-semibold">
+        {form.height_cm} cm
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-slate-500">
+        Weight
+      </p>
+
+      <p className="font-semibold">
+        {form.weight_kg} kg
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<form
+  className="mt-8 grid gap-4 md:grid-cols-2"
+  onSubmit={handleSubmit}
+>
+ {[
   { key: 'name', label: 'Name', type: 'text' },
   { key: 'email', label: 'Email', type: 'email', disabled: true },
   { key: 'age', label: 'Age', type: 'number' },
   { key: 'gender', label: 'Gender', type: 'text' },
   { key: 'height_cm', label: 'Height (cm)', type: 'number' },
   { key: 'weight_kg', label: 'Weight (kg)', type: 'number' },
-
   {
     key: 'target_weight_kg',
     label: 'Target Weight (kg)',
     type: 'number',
   },
-
   {
     key: 'activity_level',
     label: 'Activity Level',
     type: 'text',
   },
-
   {
     key: 'diet_type',
     label: 'Diet Type',
     type: 'text',
   },
-
-  { key: 'goal', label: 'Goal', type: 'text' },
-]
-        ].map(({ key, label, type, disabled }) => (
+  {
+    key: 'goal',
+    label: 'Goal',
+    type: 'text',
+  },
+].map(({ key, label, type, disabled }) => (
           <label key={key} className="block">
             <span className="text-sm font-medium text-slate-700">{label}</span>
             <input
@@ -212,13 +309,105 @@ const waterGoal =
             disabled={mutation.isPending}
             className="w-full rounded-2xl bg-brand-500 px-4 py-3 text-white transition hover:bg-brand-600 disabled:opacity-70"
           >
-            {mutation.isPending ? 'Saving...' : 'Save profile'}
+            {mutation.isPending ? 'Updating...' : 'Update Profile'}
           </button>
         </div>
         {mutation.isError && (
           <p className="md:col-span-2 rounded-2xl bg-red-50 p-3 text-sm text-red-700">Unable to update profile.</p>
         )}
-      </form>
+
+</form>
+        {/* Change Password */}
+
+<div className="mt-8 rounded-2xl border border-slate-200 p-6">
+
+  <h2 className="mb-4 text-xl font-bold">
+    Change Password
+  </h2>
+
+ <input
+  type="password"
+  placeholder="Current Password"
+  value={passwords.currentPassword}
+  onChange={(e) =>
+    setPasswords({
+      ...passwords,
+      currentPassword: e.target.value,
+    })
+  }
+  className="mb-3 w-full rounded-xl border p-3"
+/>
+
+  <input
+  type="password"
+  placeholder="New Password"
+  value={passwords.newPassword}
+  onChange={(e) =>
+    setPasswords({
+      ...passwords,
+      newPassword: e.target.value,
+    })
+  }
+  className="mb-3 w-full rounded-xl border p-3"
+/>
+
+ <input
+  type="password"
+  placeholder="Confirm Password"
+  value={passwords.confirmPassword}
+  onChange={(e) =>
+    setPasswords({
+      ...passwords,
+      confirmPassword: e.target.value,
+    })
+  }
+  className="mb-3 w-full rounded-xl border p-3"
+/>
+
+ <button
+  type="button"
+  onClick={() => {
+    if (
+      passwords.newPassword !==
+      passwords.confirmPassword
+    ) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    passwordMutation.mutate({
+      currentPassword:
+        passwords.currentPassword,
+      newPassword:
+        passwords.newPassword,
+    });
+  }}
+  className="rounded-xl bg-blue-600 px-5 py-3 text-white"
+>
+  Change Password
+</button>
+
+</div>
+
+{/* Danger Zone */}
+
+<div className="mt-8 rounded-2xl border border-red-200 p-6">
+
+  <h2 className="text-xl font-bold text-red-600">
+    Danger Zone
+  </h2>
+
+  <p className="mt-2 text-slate-500">
+    This action cannot be undone.
+  </p>
+
+  <button
+    className="mt-4 rounded-xl bg-red-600 px-5 py-3 text-white"
+  >
+    Delete Account
+  </button>
+  </div>
+      
     </div>
   );
 };

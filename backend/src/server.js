@@ -9,6 +9,7 @@ import apiRoutes from './routes/apiRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
+import accountRoutes from './routes/accountRoutes.js';
 
 dotenv.config();
 
@@ -27,6 +28,10 @@ app.use('/api/admin', adminRoutes);
 app.use(
   '/api/feedback',
   feedbackRoutes
+);
+app.use(
+  '/api/account',
+  accountRoutes
 );
 app.use(notFound);
 app.use(errorHandler);
