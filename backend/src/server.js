@@ -16,7 +16,15 @@ dotenv.config();
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'health-os-frontend-mu.vercel.app',
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 connectDb();
