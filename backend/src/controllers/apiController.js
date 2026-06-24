@@ -129,6 +129,47 @@ const buildDailySummary = async (user, date) => {
   );
 
   const caloriesBurned = exercises.reduce((sum, item) => sum + item.calories_burned, 0);
+  // Weekly Calories
+
+const weeklyCalories = [];
+
+for (let i = 6; i >= 0; i--) {
+
+  const currentDate = new Date();
+
+  currentDate.setDate(
+    currentDate.getDate() - i
+  );
+
+  const dayString =
+    currentDate
+      .toISOString()
+      .split('T')[0];
+
+  const dayMeals =
+    await FoodLog.find({
+      user: userId,
+      meal_date: dayString,
+    });
+
+  const dayCalories =
+    dayMeals.reduce(
+      (sum, meal) =>
+        sum + meal.calories,
+      0
+    );
+
+  weeklyCalories.push({
+    day:
+      currentDate.toLocaleDateString(
+        'en-US',
+        {
+          weekday: 'short',
+        }
+      ),
+    calories: dayCalories,
+  });
+}
   const waterIntakeMl = Number(waterTotals[0]?.total_ml) || 0;
   const dailyHealthScore = calculateHealthScore(totals, waterIntakeMl, caloriesBurned, goals);
   console.log('Meals:', meals.length);
@@ -150,17 +191,20 @@ console.log('Score:', dailyHealthScore);
   );
 
   return {
-    date,
-    totals,
-    meals,
-    exercises,
-    caloriesBurned,
-    waterIntakeMl,
-    weightHistory,
-    latestWeight: weightHistory.at(-1) || null,
-    goals,
-    dailyHealthScore,
-  };
+  date,
+  totals,
+  meals,
+  exercises,
+  caloriesBurned,
+  waterIntakeMl,
+  weightHistory,
+  latestWeight:
+    weightHistory.at(-1) || null,
+  goals,
+  dailyHealthScore,
+
+  weeklyCalories,
+};
 };
 
 export const searchFood = async (req, res, next) => {

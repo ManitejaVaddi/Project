@@ -13,6 +13,7 @@ const DashboardPage = () => {
     queryFn: () => getDashboard(selectedDate),
     retry: false,
   });
+  console.log(data);
 
   const weightData = useMemo(
     () =>
@@ -34,6 +35,40 @@ const DashboardPage = () => {
     ],
     [data]
   );
+  const weeklyCalories =
+  data?.weeklyCalories || [];
+  
+  const avgCalories =
+  weeklyCalories.length
+    ? Math.round(
+        weeklyCalories.reduce(
+          (sum, day) =>
+            sum + day.calories,
+          0
+        ) /
+          weeklyCalories.length
+      )
+    : 0;
+
+const daysOnGoal =
+  weeklyCalories.filter(
+    (day) =>
+      day.calories <=
+      (data?.goals?.calories || 0)
+  ).length;
+
+ const weeklyWeightHistory =
+  weightData.slice(-7);
+
+const weeklyWeightChange =
+  weeklyWeightHistory.length >= 2
+    ? (
+        weeklyWeightHistory[
+          weeklyWeightHistory.length - 1
+        ].weight -
+        weeklyWeightHistory[0].weight
+      ).toFixed(1)
+    : 0;
 
   if (isLoading) {
     return <div className="p-6 text-slate-600">Loading dashboard...</div>;
@@ -109,6 +144,109 @@ const DashboardPage = () => {
           </div>
         </section>
       </div>
+      {/* Weekly Progress */}
+
+<section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+
+  <div className="mb-8 flex items-center justify-between">
+
+    <div>
+      <h2 className="text-2xl font-bold text-slate-900">
+        Weekly Calorie Intake
+      </h2>
+
+      <p className="text-slate-500">
+        Last 7 Days Progress
+      </p>
+    </div>
+
+    <span className="rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-700">
+      On Track
+    </span>
+
+  </div>
+
+  <div className="flex h-64 items-end gap-4">
+
+  {weeklyCalories.map((item) => {
+
+    const maxCalories =
+      Math.max(
+        ...weeklyCalories.map(
+          (d) => d.calories
+        ),
+        1
+      );
+
+    const height =
+      (item.calories / maxCalories) * 220;
+
+    return (
+      <div
+        key={item.day}
+        className="flex flex-1 flex-col items-center"
+      >
+        <div
+          style={{
+            height: `${height}px`,
+          }}
+          className="w-full rounded-t-xl bg-emerald-500"
+        />
+
+        <p className="mt-2 text-sm">
+          {item.day}
+        </p>
+
+        <p className="text-xs text-slate-500">
+          {item.calories}
+        </p>
+      </div>
+    );
+  })}
+
+</div>
+
+  <div className="mt-8 grid grid-cols-3 border-t pt-6 text-center">
+
+    <div>
+  <p className="text-3xl font-bold">
+    {avgCalories}
+  </p>
+
+  <p className="text-slate-500">
+    Avg kcal/day
+  </p>
+</div>
+
+    <div>
+  <p className="text-3xl font-bold text-green-600">
+    {daysOnGoal}/7
+  </p>
+
+  <p className="text-slate-500">
+    Days On Goal
+  </p>
+</div>
+
+   <div>
+ <p
+  className={`text-3xl font-bold ${
+    weeklyWeightChange <= 0
+      ? 'text-green-600'
+      : 'text-red-600'
+  }`}
+>
+  {weeklyWeightChange} kg
+</p>
+
+  <p className="text-slate-500">
+    Weight Change
+  </p>
+</div>
+
+  </div>
+
+</section>
     </div>
   );
 };

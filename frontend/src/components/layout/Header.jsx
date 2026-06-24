@@ -35,7 +35,7 @@ useEffect(() => {
           </Link>
         </div>
         <nav className="flex flex-wrap items-center gap-3 text-sm text-slate-600">
-          <Link to="/" className="rounded-full px-4 py-2 hover:bg-slate-100">Dashboard</Link>
+          <Link to="/dashboard" className="rounded-full px-4 py-2 hover:bg-slate-100">Dashboard</Link>
           <Link to="/food-search" className="rounded-full px-4 py-2 hover:bg-slate-100">Food</Link>
           <Link to="/tracking" className="rounded-full px-4 py-2 hover:bg-slate-100">Tracking</Link>
           <Link to="/history" className="rounded-full px-4 py-2 hover:bg-slate-100">History</Link>

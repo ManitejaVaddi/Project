@@ -20,7 +20,7 @@ const RegisterPage = () => {
     mutationFn: register,
     onSuccess: (data) => {
       localStorage.setItem('nutriai_token', data.token);
-      navigate('/');
+      navigate('/dashboard');
     },
   });
 

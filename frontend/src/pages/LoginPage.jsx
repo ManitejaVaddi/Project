@@ -11,7 +11,7 @@ const LoginPage = () => {
     mutationFn: login,
     onSuccess: (data) => {
       localStorage.setItem('nutriai_token', data.token);
-      navigate('/');
+      navigate('/dashboard');
     },
   });
 
