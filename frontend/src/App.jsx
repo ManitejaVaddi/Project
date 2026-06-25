@@ -23,24 +23,19 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
      <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
 
-  <Route
-    path="/dashboard"
-    element={<DashboardPage />}
-  />
+  <Route path="/dashboard" element={<DashboardPage />}/>
         <Route path="profile" element={<ProfilePage />} />
         <Route path="food-search" element={<FoodSearchPage />} />
         <Route path="tracking" element={<TrackingPage />} />
         <Route path="coach" element={<CoachPage />} />
         <Route path="history" element={<HistoryPage />} />
         <Route path="/progress-center" element={<ProgressCenterPage />} />
-      </Route>
+        <Route path="/feedback" element={<FeedbackPage />}/>
+</Route>
       <Route path="*" element={<Navigate to="/" replace />} />
       <Route path="/admin" element={<AdminDashboardPage />} />
      
-      <Route
-  path="/feedback"
-  element={<FeedbackPage />}
-/>
+      <Route path="/feedback" element={<FeedbackPage />}/>
 <Route
   path="/admin-feedback"
   element={

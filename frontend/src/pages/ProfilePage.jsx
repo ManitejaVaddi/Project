@@ -118,18 +118,7 @@ const waterGoal =
 
   return (
     <div className="mx-auto max-w-3xl rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
-      <div className="mb-6 flex justify-center">
-
-  <img
-    src={
-      form.avatar ||
-      'https://via.placeholder.com/120'
-    }
-    alt="profile"
-    className="h-32 w-32 rounded-full border-4 border-brand-500 object-cover"
-  />
-
-</div>
+      
       <h1 className="text-3xl font-semibold text-slate-900">Your profile</h1>
       <p className="mt-2 text-slate-500">Keep your personal goals and metrics up to date.</p>
       
