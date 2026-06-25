@@ -1,20 +1,77 @@
-# NutriAI
+#  HealthOS
 
-NutriAI is a full-stack nutrition and fitness tracker with user authentication, meal tracking, exercise logging, water intake, weight progress, and a modern dashboard experience.
+HealthOS is a full-stack AI-powered nutrition and fitness tracking web application that helps users monitor their daily health, track meals, water intake, exercise, weight, and receive personalized AI health suggestions.
 
-## Project Structure
+## 🚀 Features
 
-- `backend/` - Express API server, PostgreSQL integration, JWT auth.
-- `frontend/` - React + Tailwind UI, React Router, React Query, Recharts.
+- User Authentication (Login/Register)
+- Dashboard with Health Score
+- Food & Nutrition Tracking
+- Water Intake Tracking
+- Exercise Tracking
+- Weight Tracking
+- Progress Center
+- AI Health Coach
+- User Feedback System
+- Admin Feedback Management
+- Interactive Charts & Analytics
 
-## Getting Started
+## 🛠️ Tech Stack
 
-1. Copy `.env.example` to `backend/.env` and configure your PostgreSQL database, JWT secrets, USDA API key, and optional Gemini API key.
-2. Run `npm run install:all`.
-3. Start the backend: `npm run dev:backend`.
-4. Start the frontend: `npm run dev:frontend`.
+### Frontend
+- React.js
+- Vite
+- Tailwind CSS
+- React Router
+- React Query
+- Axios
+- Recharts
 
-## Notes
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Bcrypt
 
-- Use `GEMINI_API_KEY` to enable the AI nutrition coach endpoint.
-- The app includes protected routes, meal/exercise/water tracking, weight progress charts, and a health score system.
+### AI
+- Google Gemini API
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 🔑 Environment Variables
+
+### Backend (.env)
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+### Frontend (.env)
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+## 🌐 Live Demo
+
+Link: 
+https://health-os-frontend-mu.vercel.app
