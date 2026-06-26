@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation,useQuery, } from '@tanstack/react-query';
-
+import toast from "react-hot-toast";
 import {submitFeedback,  getMyFeedbacks} from '../api/feedbackApi';
 
 
@@ -15,10 +15,15 @@ const FeedbackPage = () => {
   mutationFn: submitFeedback,
 
   onSuccess: () => {
-    setSubject('');
-    setMessage('');
+    setSubject("");
+    setMessage("");
+
+    toast.success("Feedback submitted successfully!");
   },
-  
+
+  onError: () => {
+    toast.error("Unable to submit feedback.");
+  },
 });
 const {
   data: feedbacks = [],

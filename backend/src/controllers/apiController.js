@@ -191,6 +191,9 @@ console.log('Score:', dailyHealthScore);
   );
 
   return {
+    user: {
+    name: user.name,
+  },
   date,
   totals,
   meals,

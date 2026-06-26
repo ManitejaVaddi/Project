@@ -50,6 +50,17 @@ const DashboardPage = () => {
       )
     : 0;
 
+
+    const hour = new Date().getHours();
+
+let greeting = "Good Evening";
+
+if (hour < 12) {
+  greeting = "Good Morning";
+} else if (hour < 18) {
+  greeting = "Good Afternoon";
+}
+
 const daysOnGoal =
   weeklyCalories.filter(
     (day) =>
@@ -83,10 +94,21 @@ const weeklyWeightChange =
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <header className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-        <div>
-          <p className="text-sm font-medium text-brand-700">HealthOS Dashboard</p>
-          <h1 className="mt-1 text-3xl font-semibold text-slate-950">Daily health command center</h1>
-        </div>
+       <div>
+
+  <p className="text-sm font-medium text-brand-700">
+    {greeting}, {data?.user?.name || "User"} 
+  </p>
+
+  <h1 className="mt-1 text-3xl font-semibold text-slate-950">
+    Here's today's health summary
+  </h1>
+
+  <p className="mt-2 text-slate-500">
+    Stay consistent and achieve your health goals.
+  </p>
+
+</div>
         <label className="grid gap-1 text-sm font-medium text-slate-600">
           Date
           <input
@@ -180,6 +202,9 @@ const weeklyWeightChange =
 
     const height =
       (item.calories / maxCalories) * 220;
+
+
+      
 
     return (
       <div

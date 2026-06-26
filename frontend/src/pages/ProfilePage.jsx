@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getProfile, updateProfile } from '../api/userApi';
 import { changePassword } from '../api/accountApi';
+import toast from "react-hot-toast";
 const calculateBMI = (height, weight) => {
   if (!height || !weight) return 0;
 
@@ -74,7 +75,11 @@ const [passwords, setPasswords] = useState({
     mutationFn: updateProfile,
     onSuccess: (updated) => {
       setForm(updated);
+      toast.success("Profile updated successfully!");
     },
+     onError: () => {
+    toast.error("Unable to update profile.");
+  },
   });
   const passwordMutation = useMutation({
   mutationFn: changePassword,

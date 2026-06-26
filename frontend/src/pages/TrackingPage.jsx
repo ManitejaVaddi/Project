@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import toast from "react-hot-toast";
 import {
   addExercise,
   addMeal,
@@ -41,6 +42,7 @@ const TrackingPage = () => {
   const mealMutation = useMutation({
     mutationFn: addMeal,
     onSuccess: () => {
+      toast.success("Meal added successfully ");
       setMealForm({ name: '', calories: '', protein: '', carbs: '', fat: '', fiber: '' });
       refreshData();
     },
@@ -48,6 +50,7 @@ const TrackingPage = () => {
   const exerciseMutation = useMutation({
     mutationFn: addExercise,
     onSuccess: () => {
+      toast.success("Workout logged ");
       setExerciseForm({ activity: '', duration_minutes: '', calories_burned: '' });
       refreshData();
     },
@@ -55,6 +58,7 @@ const TrackingPage = () => {
   const waterMutation = useMutation({
     mutationFn: addWater,
     onSuccess: () => {
+       toast.success("Water intake saved ");
       setWaterForm({ amount_ml: '' });
       refreshData();
     },
@@ -62,6 +66,9 @@ const TrackingPage = () => {
   const weightMutation = useMutation({
     mutationFn: addWeight,
     onSuccess: () => {
+      console.log("SUCCESS CALLED");
+
+      toast.success("Weight updated ");
       setWeightForm({ weight_kg: '' });
       refreshData();
     },
